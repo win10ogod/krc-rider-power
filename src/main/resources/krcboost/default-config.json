@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "attackMultiplier": 1.5,
+  "healthMultiplier": 1.5,
+  "armorBonus": 4,
+  "toughnessBonus": 2,
+  "speedMultiplier": 1.15,
+  "knockbackBonus": 0.1
+}

@@ -1,0 +1,17 @@
+.gradle/
+build/
+run/
+run-*/
+.work/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+.idea/
+*.iml
+*.jar.sha256
+dist/
+evidence/*.log
+evidence/*.xml
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

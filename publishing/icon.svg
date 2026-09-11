@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">KRC Rider Power</title>
+  <desc id="desc">An original mint power crest with a split visor and rising energy bolt on a dark background.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#172c3a"/><stop offset="1" stop-color="#090f1b"/></linearGradient>
+    <linearGradient id="power" x2="0" y2="1"><stop stop-color="#a9ffe1"/><stop offset="1" stop-color="#36cfb2"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="92" fill="url(#bg)"/>
+  <path d="M70 170V92h78M364 92h78v78M70 342v78h78M364 420h78v-78" fill="none" stroke="#24434b" stroke-width="4"/>
+  <circle cx="256" cy="219" r="127" fill="none" stroke="#25434a" stroke-width="18"/>
+  <path d="M182 116a127 127 0 1 0 148 0" fill="none" stroke="url(#power)" stroke-width="18" stroke-linecap="round"/>
+  <path d="m267 60-51 116h36l-10 65 62-108h-40l22-73z" fill="url(#power)"/>
+  <path d="m165 211 73 32-13 37-52-29zm182 0-73 32 13 37 52-29z" fill="#83f5d6"/>
+  <path d="m213 295 43 26 43-26" fill="none" stroke="#46cfb5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="409" text-anchor="middle" fill="#f1fff9" font-family="DejaVu Sans, sans-serif" font-size="56" font-weight="700" letter-spacing="10">KRC</text>
+  <text x="256" y="446" text-anchor="middle" fill="#8eaaa9" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" letter-spacing="5">RIDER POWER</text>
+</svg>

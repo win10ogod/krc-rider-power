@@ -1,0 +1,97 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.143'
+}
+
+version = mod_version
+group = 'dev.krcboost'
+base { archivesName = 'krc-rider-power' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.withSourcesJar()
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://api.modrinth.com/maven' }
+}
+
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+configurations {
+    gametestImplementation.extendsFrom implementation
+    gametestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
+    runs {
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        client {
+            client()
+            if (project.hasProperty('uiSmoke')) {
+                sourceSet = sourceSets.gametest
+                gameDirectory = file('run-ui')
+                systemProperty 'krcboost.uiSmoke', 'true'
+                programArguments.addAll '--width', '1000', '--height', '700'
+            }
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            gameDirectory = file('run-gametest')
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'krcboost'
+        }
+    }
+    mods {
+        krcboost { sourceSet sourceSets.main }
+        krcboost_tests { sourceSet sourceSets.gametest }
+    }
+}
+
+dependencies {
+    // Pinned Kamen Rider Craft release, fetched for development only.
+    implementation "maven.modrinth:kLNLtzWr:${krc_modrinth_version}"
+    implementation 'maven.modrinth:geckolib:tPkJmim6'
+    runtimeOnly 'maven.modrinth:player-animation-library:yjxtkvnD'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'com.google.code.gson:gson:2.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.named('test', Test) { useJUnitPlatform() }
+tasks.named('processResources', ProcessResources) {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { expand version: project.version }
+}
+tasks.named('wrapper', Wrapper) { gradleVersion = '9.2.1' }
+
+tasks.withType(Jar).configureEach {
+    from('LICENSE')
+}
+
+// Minecraft can exit successfully when its test server fails before registering tests.
+// Require a fresh completion record for every @GameTest in this project as well.
+tasks.named('runGameTestServer') {
+    doFirst {
+        def log = file('run-gametest/logs/latest.log')
+        log.parentFile.mkdirs()
+        log.text = ''
+    }
+    doLast {
+        int expected = fileTree('src/gametest/java').matching { include '**/*.java' }
+                .files.sum { source -> (source.getText('UTF-8') =~ /@GameTest\s*\(/).count } as int
+        def log = file('run-gametest/logs/latest.log')
+        def result = (log.exists() ? log.getText('UTF-8') : '') =~ /All (\d+) required tests passed/
+        if (expected == 0 || !result.find() || result.group(1).toInteger() != expected) {
+            throw new GradleException("GameTest did not confirm all ${expected} required tests passed; inspect run-gametest/logs/latest.log")
+        }
+    }
+}

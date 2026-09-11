@@ -1,0 +1,75 @@
+name: Update KRC and build
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: Rebuild and test even when KRC is unchanged
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: krc-dependency-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'win10ogod/krc-rider-power'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - name: Test the update selector
+        run: python3 -m unittest discover -s scripts/tests -v
+      - name: Check the upstream stable release
+        id: krc
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORCE_BUILD: ${{ inputs.force_build || 'false' }}
+        run: |
+          args=(--apply --github)
+          if [ "$FORCE_BUILD" = "true" ]; then args+=(--force-build); fi
+          python3 scripts/krc_updates.py "${args[@]}"
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        if: steps.krc.outputs.should_build == 'true'
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+      - name: Build and run all compatibility tests
+        if: steps.krc.outputs.should_build == 'true'
+        env:
+          BUILD_VERSION: ${{ steps.krc.outputs.build_version }}
+        run: |
+          mkdir -p .work
+          set -o pipefail
+          ./gradlew --no-daemon "-Pmod_version=$BUILD_VERSION" test runGameTestServer build 2>&1 | tee .work/compatibility-build.log
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: success() && steps.krc.outputs.should_build == 'true'
+        with:
+          name: krc-compatibility-${{ steps.krc.outputs.version_id }}
+          path: build/libs/*.jar
+          if-no-files-found: error
+      - name: Commit verified dependency and publish compatibility release
+        if: success() && steps.krc.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_compatibility.py
+      - name: Keep build diagnostics
+        if: always() && steps.krc.outputs.should_build == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: krc-update-diagnostics
+          include-hidden-files: true
+          path: |
+            .work/compatibility-build.log
+            .work/krc-candidate.json
+            build/test-results/test/
+            run-gametest/logs/latest.log
+          if-no-files-found: warn
