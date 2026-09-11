@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KarmaProgressTest {
     @TempDir Path directory;
-    @Test void neutralGoodAndEvilScaleOnlyBonusStrength() {
+    @Test void secondaryBonusesRetainTheirSignedKarmaScale() {
         var rules = KarmaSettings.defaults();
         assertEquals(1, rules.strength(0));
         assertEquals(2, rules.strength(100));

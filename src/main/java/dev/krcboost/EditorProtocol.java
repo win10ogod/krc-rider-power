@@ -28,7 +28,7 @@ public final class EditorProtocol {
         @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
     }
     public static void register(RegisterPayloadHandlersEvent event) {
-        var registrar = event.registrar("1");
+        var registrar = event.registrar("2");
         registrar.playToClient(OpenEditor.TYPE, OpenEditor.CODEC,
                 (packet, context) -> context.enqueueWork(() -> dev.krcboost.client.EditorClient.open(packet.json())));
         registrar.playToServer(SaveEditor.TYPE, SaveEditor.CODEC, (packet, context) -> context.enqueueWork(() -> {

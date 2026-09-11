@@ -25,15 +25,19 @@ public final class BoostEngine {
             clear(player);
             return false;
         }
-        var effect = player.getEffect(KrcBoost.RIDER_POWER);
+        var power = RiderPowerStats.calculate(config, KrcBoost.karmaSettings(), KarmaSystem.score(player));
+        var chosen = power.evil() ? KrcBoost.EVIL_RIDER_POWER : KrcBoost.RIDER_POWER;
+        var opposite = power.evil() ? KrcBoost.RIDER_POWER : KrcBoost.EVIL_RIDER_POWER;
+        player.removeEffect(opposite);
+        var effect = player.getEffect(chosen);
         if (effect == null || effect.getAmplifier() != 0 || !effect.isInfiniteDuration()) {
-            if (effect != null) player.removeEffect(KrcBoost.RIDER_POWER);
-            player.addEffect(new MobEffectInstance(KrcBoost.RIDER_POWER, -1, 0, false, false, true));
+            if (effect != null) player.removeEffect(chosen);
+            player.addEffect(new MobEffectInstance(chosen, -1, 0, false, false, true));
         }
         double oldMax = player.getMaxHealth();
         float health = player.getHealth();
-        double strength = KarmaSystem.strength(player);
-        multiplier(player, Attributes.MAX_HEALTH, 1 + (config.healthMultiplier() - 1) * strength);
+        double strength = power.secondaryBonusStrength();
+        multiplier(player, Attributes.MAX_HEALTH, power.healthMultiplier());
         bonus(player, Attributes.ARMOR, config.armorBonus() * strength);
         bonus(player, Attributes.ARMOR_TOUGHNESS, config.toughnessBonus() * strength);
         multiplier(player, Attributes.MOVEMENT_SPEED, 1 + (config.speedMultiplier() - 1) * strength);
@@ -42,7 +46,7 @@ public final class BoostEngine {
         return true;
     }
     public static double damageMultiplier(Player player, BoostConfig config) {
-        return 1 + (config.attackMultiplier() - 1) * KarmaSystem.strength(player);
+        return RiderPowerStats.calculate(config, KrcBoost.karmaSettings(), KarmaSystem.score(player)).damageMultiplier();
     }
     private static void multiplier(Player player, Holder<Attribute> attr, double factor) {
         put(player, attr, factor - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
@@ -66,6 +70,7 @@ public final class BoostEngine {
         double oldMax = player.getMaxHealth();
         float health = player.getHealth();
         player.removeEffect(KrcBoost.RIDER_POWER);
+        player.removeEffect(KrcBoost.EVIL_RIDER_POWER);
         for (var attr : ATTRIBUTES) {
             var instance = player.getAttribute(attr);
             if (instance != null && instance.hasModifier(MODIFIER)) instance.removeModifier(MODIFIER);

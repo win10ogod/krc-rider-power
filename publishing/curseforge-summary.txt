@@ -1,1 +1,1 @@
-One configurable Rider Power buff for Kamen Rider Craft, with karma-based bonuses and administrator-controlled settings.
+Shared Rider Power for Kamen Rider Craft: good deeds strengthen bonuses, while evil karma trades health for damage.

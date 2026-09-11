@@ -4,5 +4,7 @@
   "cureReward": 10,
   "hostileKillReward": 1,
   "villagerKillPenalty": 20,
-  "dailyRewardLimit": 30
+  "dailyRewardLimit": 30,
+  "evilDamageBonusScale": 3.0,
+  "evilHealthMultiplier": 0.5
 }

@@ -31,7 +31,6 @@ public final class KarmaSystem {
         if (!(player.level() instanceof ServerLevel level)) return 0;
         return KrcBoost.karmaSettings().bound(KarmaSavedData.get(level.getServer()).progress(player.getUUID()).score());
     }
-    public static double strength(Player player) { return KrcBoost.karmaSettings().strength(score(player)); }
     public static boolean rewardEligible(Mob mob) {
         if (mob.getPersistentData().getBoolean(NO_REWARDS)) return false;
         MobSpawnType origin = mob.getSpawnType();
@@ -93,8 +92,11 @@ public final class KarmaSystem {
     private static void changed(Player player, int delta, String reason) {
         if (delta == 0) return;
         BoostEngine.update(player, KrcBoost.config());
+        var power = RiderPowerStats.calculate(KrcBoost.config(), KrcBoost.karmaSettings(), score(player));
         if (player instanceof ServerPlayer)
             player.displayClientMessage(Component.translatable("krcboost.karma.changed", Component.translatable(reason),
-                    (delta > 0 ? "+" : "") + delta, score(player), Math.round(strength(player) * 100)), true);
+                    (delta > 0 ? "+" : "") + delta, score(player),
+                    Component.translatable(power.evil() ? "effect.krcboost.evil_rider_power" : "effect.krcboost.rider_power"),
+                    power.damageMultiplier(), power.healthMultiplier()), true);
     }
 }

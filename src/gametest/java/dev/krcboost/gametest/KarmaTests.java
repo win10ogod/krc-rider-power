@@ -177,9 +177,10 @@ public final class KarmaTests {
         near(helper, player.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getModifier(BoostEngine.MODIFIER).amount(), 0.2, "Knockback bonus doubles");
         store.change(player.getUUID(), -200, now, rules);
         BoostEngine.update(player, BoostConfig.defaults());
-        near(helper, player.getMaxHealth(), 20, "Maximum evil removes the addon health bonus");
-        near(helper, player.getHealth(), 8, "Evil preserves health ratio");
-        near(helper, BoostEngine.damageMultiplier(player, BoostConfig.defaults()), 1, "No extra damage at minimum karma");
+        near(helper, player.getMaxHealth(), 10, "Maximum evil halves underlying maximum health");
+        near(helper, player.getHealth(), 4, "Evil preserves health ratio");
+        near(helper, BoostEngine.damageMultiplier(player, BoostConfig.defaults()), 2.5, "Maximum evil trades health for more damage");
+        helper.assertTrue(player.hasEffect(KrcBoost.EVIL_RIDER_POWER) && !player.hasEffect(KrcBoost.RIDER_POWER), "Only evil power is active");
         store.change(player.getUUID(), 200, now, rules);
         for (int i = 0; i < 100; i++) {
             BoostEngine.update(player, BoostConfig.defaults());

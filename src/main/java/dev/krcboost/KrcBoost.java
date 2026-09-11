@@ -18,11 +18,14 @@ public final class KrcBoost {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, ID);
     public static final DeferredHolder<MobEffect, RiderPowerEffect> RIDER_POWER = EFFECTS.register("rider_power", RiderPowerEffect::new);
+    public static final DeferredHolder<MobEffect, RiderPowerEffect> EVIL_RIDER_POWER = EFFECTS.register("evil_rider_power",
+            () -> new RiderPowerEffect(MobEffectCategory.NEUTRAL, 0xE34660));
     private static volatile BoostConfig config = BoostConfig.defaults();
     private static volatile KarmaSettings karmaSettings = KarmaSettings.defaults();
     private static long revision;
     public static final class RiderPowerEffect extends MobEffect {
-        private RiderPowerEffect() { super(MobEffectCategory.BENEFICIAL, 0x43CBB1); }
+        private RiderPowerEffect() { this(MobEffectCategory.BENEFICIAL, 0x43CBB1); }
+        private RiderPowerEffect(MobEffectCategory category, int color) { super(category, color); }
     }
     public KrcBoost(IEventBus modBus) {
         EFFECTS.register(modBus);

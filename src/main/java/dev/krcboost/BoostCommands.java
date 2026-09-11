@@ -26,8 +26,7 @@ public final class BoostCommands {
                             + "；護甲 +" + c.armorBonus() + "；韌性 +" + c.toughnessBonus()
                             + "；移速 ×" + c.speedMultiplier() + "；抗擊退 +" + c.knockbackBonus()
                             + (player == null ? "" : "\n目前資格：" + (BoostEngine.transformed(player) ? "已完成 KRC 變身" : "未完成 KRC 變身")
-                            + "；善惡值：" + KarmaSystem.score(player) + "；加成強度：" + Math.round(KarmaSystem.strength(player) * 100) + "%"
-                            + "；符合變身資格時傷害 ×" + (c.enabled() ? BoostEngine.damageMultiplier(player, c) : 1));
+                            + "；善惡值：" + KarmaSystem.score(player) + "；" + personalPower(player));
                     context.getSource().sendSuccess(() -> Component.literal(text), false);
                     return 1;
                 }))
@@ -36,10 +35,10 @@ public final class BoostCommands {
                     var rules = KrcBoost.karmaSettings();
                     context.getSource().sendSuccess(() -> Component.literal("善惡系統" + (rules.enabled() ? "已開啟" : "已停用（保留紀錄）")
                             + "；善惡值：" + KarmaSystem.score(player) + "（範圍 -" + rules.scoreLimit() + "～+" + rules.scoreLimit() + "）"
-                            + "；騎士之力加成強度：" + Math.round(KarmaSystem.strength(player) * 100) + "%"
+                            + "；" + personalPower(player)
                             + "\n首次救治未由村民感染而來的殭屍村民 +" + rules.cureReward()
                             + "；擊殺敵對怪物 +" + rules.hostileKillReward()
-                            + "；殺害村民 -" + rules.villagerKillPenalty()
+                            + "；殺害村民或流浪商人 -" + rules.villagerKillPenalty()
                             + "；每 24000 遊戲 tick 最多獲得 " + rules.dailyRewardLimit() + " 正分。"), false);
                     return 1;
                 }))
@@ -55,4 +54,12 @@ public final class BoostCommands {
                     }
                 })));
     }
+    private static String personalPower(net.minecraft.world.entity.player.Player player) {
+        int score = KarmaSystem.score(player);
+        var power = RiderPowerStats.calculate(KrcBoost.config(), KrcBoost.karmaSettings(), score);
+        return "功德：" + Math.max(0, score) + "；業力：" + Math.max(0, -score)
+                + "；力量：" + (KrcBoost.config().enabled() ? (power.evil() ? "邪惡騎士之力" : "騎士之力") : "已停用")
+                + "；完成變身時傷害 ×" + power.damageMultiplier() + "、最大生命 ×" + power.healthMultiplier();
+    }
+
 }

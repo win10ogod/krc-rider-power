@@ -3,5 +3,6 @@
   "krcboost.karma.cure": "Rescue",
   "krcboost.karma.villager_kill": "Killed a villager",
   "krcboost.karma.hostile_kill": "Defeated a hostile mob",
-  "krcboost.karma.changed": "%1$s: karma %2$s (total %3$s); Rider Power bonus strength %4$s%%"
+  "krcboost.karma.changed": "%1$s: karma %2$s (total %3$s); %4$s — damage ×%5$s, max health ×%6$s",
+  "effect.krcboost.evil_rider_power": "Evil Rider Power"
 }

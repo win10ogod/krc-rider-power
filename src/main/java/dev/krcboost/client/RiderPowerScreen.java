@@ -93,7 +93,7 @@ public final class RiderPowerScreen extends Screen {
         for (int i = 0; i < 6; i++)
             graphics.drawString(font, LABELS[i], left + (i % 2) * (column + 16), top + 50 + (i / 2) * 40, 0xFFFFFF, false);
         graphics.drawString(font, "完成變身時生效；解除變身移除，保留血量比例。", left, top + 168, 0xB2B8C5, false);
-        graphics.drawString(font, "善惡調整實際加成；原有屬性上限仍適用。", left, top + 180, 0xB2B8C5, false);
+        graphics.drawString(font, "業力提高傷害、降低生命；原有屬性上限仍適用。", left, top + 180, 0xB2B8C5, false);
         if (message != null && !message.isBlank())
             graphics.drawWordWrap(font, Component.literal(message), left, top + 220, panelWidth,
                     message.startsWith("未儲存") ? 0xFF9999 : 0x89E3BE);
