@@ -33,7 +33,7 @@ public final class BoostEvents {
         // One multiplier for player-attributed melee, projectiles, and KRC abilities.
         // It runs before armor/resistance and is not also applied to the attack attribute.
         if (KrcBoost.config().enabled() && BoostEngine.transformed(player)) {
-            double amount = event.getAmount() * KrcBoost.config().attackMultiplier();
+            double amount = event.getAmount() * BoostEngine.damageMultiplier(player, KrcBoost.config());
             if (!Double.isFinite(amount) || amount > Float.MAX_VALUE)
                 throw new IllegalArgumentException("Rider Power damage exceeds the game's finite float range");
             event.setAmount((float)amount);

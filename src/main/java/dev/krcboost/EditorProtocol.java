@@ -42,7 +42,7 @@ public final class EditorProtocol {
                 for (String key : root.keySet())
                     if (!key.equals("revision") && !key.equals("config")) throw new IllegalArgumentException("未知欄位：" + key);
                 apply(player, BoostConfig.parse(root.getAsJsonObject("config")), root.get("revision").getAsLong());
-                open(player, "已儲存，全服變身玩家統一生效。");
+                open(player, "已儲存，全服共用基礎值；實際加成依各玩家善惡調整。");
             } catch (Exception e) {
                 open(player, "未儲存：" + e.getMessage());
             }

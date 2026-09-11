@@ -2,7 +2,7 @@
 
 [English](README.md) · [下載](https://github.com/win10ogod/krc-rider-power/releases) · [MIT 授權](LICENSE)
 
-一個由伺服器統一控制的通用 Buff。所有完成 KRC 變身的玩家共用同一組加成，不依年代、騎士名稱或形態建立清單。
+一個由伺服器統一控制的通用 Buff。管理員設定一組共用基礎值，每位玩家的行善與作惡會透過善惡值增強或削弱自己的加成；不依年代、騎士名稱或形態建立清單。
 
 普通玩家不能修改數值；管理員可在遊戲內編輯。新增形態只要仍使用 KRC 的 `RiderDriverItem` 與完整變身介面，就不需要為它新增對照資料。
 
@@ -10,14 +10,14 @@
 
 1. 使用 **Minecraft 1.21.1、Java 21、NeoForge 21.1.244 或以上的 21.1 版本**。
 2. 安裝 Kamen Rider Craft，以及它要求的 GeckoLib、Player Animation Library。
-3. 把 `krc-rider-power-1.0.0.jar` 放進遊戲的 `mods` 資料夾。多人遊戲的伺服器與客戶端都要安裝。
+3. 把 `krc-rider-power-1.1.0.jar` 放進遊戲的 `mods` 資料夾。多人遊戲的伺服器與客戶端都要安裝。
 4. 穿齊 KRC 裝備並完成變身，會自動出現 **騎士之力** Buff。解除變身、裝備不完整、死亡或進入觀察者模式後，加成會移除。
 
 已實際測試的組合：KRC **1.1.3**、NeoForge **21.1.244**、GeckoLib **4.9.2**、Player Animation Library **1.1.6+mc.1.21.1**。KRC 未來版本若改動共用 Java 介面，仍可能需要更新附加模組。
 
-## 預設加成
+## 預設基礎加成
 
-| 數值 | 共用設定 |
+| 數值 | 中立善惡值時的共用設定 |
 | --- | --- |
 | 傷害 | ×1.5 |
 | 最大生命 | ×1.5 |
@@ -30,11 +30,31 @@
 
 其他加成疊加於原本屬性之上，保留 KRC 效果、裝備與其他模組的修飾值。Minecraft 本身的屬性上限仍適用，例如護甲 30、護甲韌性 20、抗擊退 1。儲存的設定不會被偷偷改成其他值。
 
+## 行善與作惡
+
+善惡值從 **0** 開始，預設範圍 **−100～+100**。
+
+| 行為 | 善惡值 |
+| --- | --- |
+| 首次成功救治符合條件的殭屍村民 | +10 |
+| 擊殺符合條件的敵對怪物 | +1 |
+| 殺害村民或流浪商人 | −20 |
+| 殺害動物（包含馴養動物）、玩家 | 0 |
+
+未變身時也會記分，完成變身後才套用騎士之力。每 24,000 個伺服器遊戲 tick 共用 **30 點正分上限**，死亡、登出或切換維度都不會清除紀錄。一般生怪磚、生怪蛋、指令、發射器與召喚來源不給正分；試煉生怪磚的戰鬥仍可加分。村民遭感染後的救治與反覆感染救治不給分，避免製造受害者刷取獎勵。
+
+善惡值只調整本模組的額外加成：預設傷害在善惡值 −100／0／+100 時分別為 **×1／×1.5／×2**。作惡最多使本模組的加成歸零，保留原本 KRC 與裝備數值，仍然只有一個 Buff。善惡改變最大生命時也會保留目前血量百分比。
+
+玩家使用 `/krcboost karma` 查看分數。管理員可編輯 `config/krcboost-karma.json`，再執行 `/krcboost reload`；普通玩家沒有改分入口。將善惡設定的 `enabled` 設成 `false`，會保留分數紀錄並恢復共用基礎加成。
+
+完整規則、設定檔與防刷分條件見 [善惡系統說明](docs/karma.md)。
+
 ## 管理員編輯
 
-- `/krcboost status`：所有玩家皆可查看共用設定與自身變身資格。
+- `/krcboost status`：所有玩家皆可查看共用基礎設定、善惡值與自身變身資格。
+- `/krcboost karma`：查看自己的善惡值、加成強度與記分規則。
 - `/krcboost edit`：開啟管理員編輯畫面，修改後按「儲存並套用全服」。需要 **權限等級 2**。
-- `/krcboost reload`：管理員在磁碟編輯設定後重新載入。也可從伺服器主控台執行。
+- `/krcboost reload`：管理員在磁碟編輯設定後，重新載入基礎加成與善惡兩份設定。也可從伺服器主控台執行。
 
 設定檔首次啟動時產生於 `config/krcboost.json`。也可以參考 [預設設定](src/main/resources/krcboost/default-config.json)。
 
@@ -56,7 +76,7 @@
 
 ## 防止自行改值、疊加與刷血
 
-- 指令與網路儲存請求皆由伺服器檢查管理員權限，沒有個人加成或普通玩家自訂入口。
+- 指令與網路儲存請求皆由伺服器檢查管理員權限，共用基礎設定與善惡分數皆沒有普通玩家自訂入口。
 - 伺服器讀取實際裝備與 KRC 變身狀態；只有腰帶、裝備混搭或尚在變身動畫中，都不會生效。
 - 一種 Buff、一組固定修飾值識別碼，重複更新不會堆疊加成。手動加入的高等級 Buff 會被校正為等級 I；未變身時則會移除。
 - 最大生命改變時保留血量百分比。例如 `8/20 → 12/30 → 8/20`，反覆變身無法補滿生命。
@@ -73,9 +93,9 @@ Gradle 會自動從 KRC 作者的 Modrinth 發佈來源下載釘選版本，供�
 ./gradlew test runGameTestServer build
 ```
 
-Windows 使用 `gradlew.bat test runGameTestServer build`。需要 JDK 21。成品位於 `build/libs/krc-rider-power-1.0.0.jar`；同目錄的 `-sources.jar` 是原始碼，請勿當作遊戲模組安裝。
+Windows 使用 `gradlew.bat test runGameTestServer build`。需要 JDK 21。成品位於 `build/libs/krc-rider-power-1.1.0.jar`；同目錄的 `-sources.jar` 是原始碼，請勿當作遊戲模組安裝。
 
-驗證記錄見 [evidence/verification.md](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
+1.1.0 驗證記錄見 [善惡系統驗證](evidence/karma-verification.md)，原版記錄見 [1.0.0 驗證](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
 
 此專案不修改或重新封裝 KRC 原始 JAR。
 

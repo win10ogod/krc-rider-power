@@ -1,0 +1,1 @@
+One configurable Rider Power buff for Kamen Rider Craft, with karma-based bonuses and administrator-controlled settings.

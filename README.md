@@ -2,7 +2,7 @@
 
 [繁體中文](README.zh-TW.md) · [Downloads](https://github.com/win10ogod/krc-rider-power/releases) · [MIT license](LICENSE)
 
-One configurable, server-controlled **Rider Power** buff for completed [Kamen Rider Craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) transformations. Every eligible player shares the same bonuses; administrators can edit them in game.
+One configurable, server-controlled **Rider Power** buff for completed [Kamen Rider Craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) transformations. Administrators set the shared base bonuses; each player's deeds strengthen or weaken their own bonus through server-owned karma.
 
 The addon checks KRC's common driver and transformation interface. New forms using that interface can receive the same buff without adding rider names or form profiles.
 
@@ -13,11 +13,11 @@ The addon checks KRC's common driver and transformation interface. New forms usi
 3. Put the release JAR in `mods` on **both the client and server**.
 4. Equip a complete KRC suit and finish transforming. Rider Power activates automatically and is removed when transformation eligibility ends.
 
-The 1.0.0 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
+The 1.1.0 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
 
-## Default bonuses
+## Default base bonuses
 
-| Stat | Shared setting |
+| Stat | Shared setting at neutral karma |
 | --- | --- |
 | Damage | ×1.5 |
 | Maximum health | ×1.5 |
@@ -29,6 +29,38 @@ The 1.0.0 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib
 Damage is multiplied once, before armor and resistance calculations, for attacks attributed to the transformed player. This includes melee attacks, projectiles, and KRC skills carrying a player source. Self-damage and damage with no player source are excluded.
 
 Attribute bonuses preserve modifiers from equipment and other mods. Minecraft's normal attribute limits still apply; the configuration itself is not silently reduced to those limits.
+
+## Karma and Rider Power
+
+Karma starts at **0** and ranges from **−100 to +100** by default:
+
+| Action | Karma |
+| --- | --- |
+| Complete the first eligible zombie villager cure | +10 |
+| Kill an eligible hostile monster | +1 |
+| Kill a villager or wandering trader | −20 |
+| Kill an animal, including a tamed pet, or another player | 0 |
+
+Actions count even while untransformed; the buff still requires a completed transformation. Positive gains share a **30-point budget per 24,000 server game ticks** (20 minutes at 20 TPS). Ordinary spawner, spawn egg, command, dispenser, and mob-summoned targets do not award points. Trial chamber monsters remain eligible. Infected villagers and repeated cures do not award rescue points. Exclusions persist through conversions and slime splitting. Naturally spawned mob farms can still earn points within the same budget.
+
+Karma scales only this addon's **extra bonus**: `strength = 1 + karma / 100`. A multiplier becomes `1 + (baseMultiplier − 1) × strength`; an additive bonus becomes `baseBonus × strength`. With the default damage setting, −100 / 0 / +100 karma gives **×1 / ×1.5 / ×2** damage. Maximum evil removes this addon's bonus without reducing the underlying KRC or equipment stats. There is still only one Rider Power effect.
+
+The server stores scores and reward budgets by player UUID in the world's `data/krcboost_karma.dat`. Death, logout, and dimension changes do not reset them. Use `/krcboost karma` to view your score; no command or client packet sets personal scores.
+
+Rules are created in `config/krcboost-karma.json`:
+
+```json
+{
+  "enabled": true,
+  "scoreLimit": 100,
+  "cureReward": 10,
+  "hostileKillReward": 1,
+  "villagerKillPenalty": 20,
+  "dailyRewardLimit": 30
+}
+```
+
+Administrators can edit this file and run `/krcboost reload`. `scoreLimit` must be a positive integer; event values and the positive reward budget must be nonnegative integers. Set karma's `enabled` to `false` to keep the shared base bonuses without karma scaling or scoring; saved history is retained. The in-game editor controls base bonuses. See the [detailed karma guide (Traditional Chinese)](docs/karma.md) for eligibility, persistence, and examples.
 
 ## Configuration
 
@@ -48,9 +80,10 @@ Attribute bonuses preserve modifiers from equipment and other mods. Minecraft's 
 
 | Command | Access | Action |
 | --- | --- | --- |
-| `/krcboost status` | Everyone | View shared settings and transformation eligibility |
+| `/krcboost status` | Everyone | View shared base settings, personal karma, and transformation eligibility |
+| `/krcboost karma` | Everyone | View your score, bonus strength, and scoring rules |
 | `/krcboost edit` | Operator level 2 | Edit values and apply them to the whole server |
-| `/krcboost reload` | Operator level 2 or server console | Reload the JSON file |
+| `/krcboost reload` | Operator level 2 or server console | Reload both JSON files |
 
 Multipliers must be finite and at least 1; additive values must be finite and nonnegative. The knockback resistance bonus must be between 0 and 1. Set `enabled` to `false` to disable and remove the buff. Invalid files are not overwritten, and a failed reload retains the last valid configuration.
 
@@ -58,7 +91,7 @@ In the editor, **載入預設** loads defaults into the fields, **儲存並套�
 
 ![Rider Power administrator editor, currently in Traditional Chinese](evidence/rider-power-editor.png)
 
-## Consistent multiplayer bonuses
+## Server-controlled bonuses
 
 - Commands and save packets both require server-checked administrator permission.
 - Eligibility comes from actual equipment and KRC transformation state. A belt alone, an incomplete suit, or an unfinished transformation does not qualify.
@@ -79,7 +112,7 @@ Install **JDK 21**, clone the repository, and run:
 
 On Windows, use `gradlew.bat test runGameTestServer build`. Gradle downloads the pinned KRC dependency from the author's Modrinth release; no local upstream JAR is required. The dependency is not bundled into this mod.
 
-Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [verification details](evidence/verification.md).
+Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [1.1.0 verification details](evidence/karma-verification.md) and the [1.0.0 verification record](evidence/verification.md).
 
 ## Automatic KRC updates
 

@@ -1,3 +1,7 @@
 {
-  "effect.krcboost.rider_power": "骑士之力"
+  "effect.krcboost.rider_power": "骑士之力",
+  "krcboost.karma.cure": "救治成功",
+  "krcboost.karma.villager_kill": "杀害村民",
+  "krcboost.karma.hostile_kill": "击败敌对怪物",
+  "krcboost.karma.changed": "%1$s：善恶 %2$s（目前 %3$s）；骑士之力加成强度 %4$s%%"
 }

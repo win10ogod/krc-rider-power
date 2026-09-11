@@ -89,11 +89,11 @@ public final class RiderPowerScreen extends Screen {
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
         graphics.drawCenteredString(font, title, width / 2, top + 8, 0x73E0CB);
-        graphics.drawString(font, "管理員設定 · 全服共用", left, top + 31, 0xD0D5DE, false);
+        graphics.drawString(font, "管理員設定 · 全服共用基礎值", left, top + 31, 0xD0D5DE, false);
         for (int i = 0; i < 6; i++)
             graphics.drawString(font, LABELS[i], left + (i % 2) * (column + 16), top + 50 + (i / 2) * 40, 0xFFFFFF, false);
         graphics.drawString(font, "完成變身時生效；解除變身移除，保留血量比例。", left, top + 168, 0xB2B8C5, false);
-        graphics.drawString(font, "遊戲原有屬性上限仍適用。", left, top + 180, 0xB2B8C5, false);
+        graphics.drawString(font, "善惡調整實際加成；原有屬性上限仍適用。", left, top + 180, 0xB2B8C5, false);
         if (message != null && !message.isBlank())
             graphics.drawWordWrap(font, Component.literal(message), left, top + 220, panelWidth,
                     message.startsWith("未儲存") ? 0xFF9999 : 0x89E3BE);

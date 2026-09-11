@@ -19,6 +19,7 @@ public final class KrcBoost {
     private static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, ID);
     public static final DeferredHolder<MobEffect, RiderPowerEffect> RIDER_POWER = EFFECTS.register("rider_power", RiderPowerEffect::new);
     private static volatile BoostConfig config = BoostConfig.defaults();
+    private static volatile KarmaSettings karmaSettings = KarmaSettings.defaults();
     private static long revision;
     public static final class RiderPowerEffect extends MobEffect {
         private RiderPowerEffect() { super(MobEffectCategory.BENEFICIAL, 0x43CBB1); }
@@ -29,11 +30,15 @@ public final class KrcBoost {
     }
     public static Path configPath() { return FMLPaths.CONFIGDIR.get().resolve("krcboost.json"); }
     public static BoostConfig config() { return config; }
+    public static KarmaSettings karmaSettings() { return karmaSettings; }
+    public static Path karmaConfigPath() { return FMLPaths.CONFIGDIR.get().resolve("krcboost-karma.json"); }
     public static long revision() { return revision; }
     public static void reload() {
         try {
             BoostConfig next = BoostConfig.load(configPath());
+            KarmaSettings nextKarma = KarmaSettings.load(karmaConfigPath());
             config = next;
+            karmaSettings = nextKarma;
             revision++;
             LOGGER.info("Loaded the shared Rider Power buff configuration");
         } catch (Exception e) {

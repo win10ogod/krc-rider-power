@@ -9,7 +9,7 @@
 | Game | Minecraft |
 | Name | KRC Rider Power |
 | 建議 Slug | krc-rider-power（以網站實際可用名稱為準） |
-| Summary | One configurable, server-controlled buff for Kamen Rider Craft transformations, with shared bonuses and administrator-only editing. |
+| Summary | One configurable Rider Power buff for Kamen Rider Craft, with karma-based bonuses and administrator-controlled settings. |
 | Class | Mods |
 | Main category | Addons |
 | License | MIT License |
@@ -19,19 +19,19 @@
 | Issues | https://github.com/win10ogod/krc-rider-power/issues |
 | Screenshot | [rider-power-editor.png](../evidence/rider-power-editor.png) |
 | Screenshot title | Rider Power administrator editor |
-| Screenshot caption | Configure the six shared bonuses. The current editor uses Traditional Chinese. Saving requires server operator permission level 2. |
+| Screenshot caption | Configure the six shared base bonuses; personal karma adjusts their strength. The current editor uses Traditional Chinese. Saving requires server operator permission level 2. |
 
-## 第一個檔案
+## 上傳檔案
 
 | 欄位 | 填入內容 |
 | --- | --- |
-| Upload file | `krc-rider-power-1.0.0.jar`，位於本地 `dist/1.0.0/` 或 GitHub Release |
-| Display name | KRC Rider Power 1.0.0 — NeoForge 1.21.1 |
+| Upload file | `krc-rider-power-1.1.0.jar`，位於本地 `dist/1.1.0/` 或 GitHub Release |
+| Display name | KRC Rider Power 1.1.0 — NeoForge 1.21.1 |
 | Release type | Release |
 | Game version | 1.21.1 |
 | Mod loader | NeoForge |
 | Java version | Java 21（若表單提供此欄位） |
-| Changelog | 使用 [CHANGELOG.md](../CHANGELOG.md) 的 1.0.0 段落 |
+| Changelog | 使用 [CHANGELOG.md](../CHANGELOG.md) 的 1.1.0 段落 |
 
 在專案或檔案的 Relations 中，將下列項目設為 **Required Dependency**：
 

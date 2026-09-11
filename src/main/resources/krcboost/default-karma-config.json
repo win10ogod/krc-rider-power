@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "scoreLimit": 100,
+  "cureReward": 10,
+  "hostileKillReward": 1,
+  "villagerKillPenalty": 20,
+  "dailyRewardLimit": 30
+}

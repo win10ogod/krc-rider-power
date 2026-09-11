@@ -9,7 +9,7 @@ version="${version}"
 displayName="KRC Rider Power"
 displayURL="https://github.com/win10ogod/krc-rider-power"
 authors="KRC Rider Power contributors"
-description='''One configurable, server-controlled Rider Power buff for completed Kamen Rider Craft transformations. Shared bonuses for every eligible player, with administrator-only editing.'''
+description='''One configurable, server-controlled Rider Power buff for completed Kamen Rider Craft transformations. Shared base bonuses with personal karma from deeds, and administrator-only editing.'''
 
 [[dependencies.krcboost]]
 modId="neoforge"

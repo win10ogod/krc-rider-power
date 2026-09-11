@@ -32,13 +32,17 @@ public final class BoostEngine {
         }
         double oldMax = player.getMaxHealth();
         float health = player.getHealth();
-        multiplier(player, Attributes.MAX_HEALTH, config.healthMultiplier());
-        bonus(player, Attributes.ARMOR, config.armorBonus());
-        bonus(player, Attributes.ARMOR_TOUGHNESS, config.toughnessBonus());
-        multiplier(player, Attributes.MOVEMENT_SPEED, config.speedMultiplier());
-        bonus(player, Attributes.KNOCKBACK_RESISTANCE, config.knockbackBonus());
+        double strength = KarmaSystem.strength(player);
+        multiplier(player, Attributes.MAX_HEALTH, 1 + (config.healthMultiplier() - 1) * strength);
+        bonus(player, Attributes.ARMOR, config.armorBonus() * strength);
+        bonus(player, Attributes.ARMOR_TOUGHNESS, config.toughnessBonus() * strength);
+        multiplier(player, Attributes.MOVEMENT_SPEED, 1 + (config.speedMultiplier() - 1) * strength);
+        bonus(player, Attributes.KNOCKBACK_RESISTANCE, config.knockbackBonus() * strength);
         restoreHealthFraction(player, health, oldMax);
         return true;
+    }
+    public static double damageMultiplier(Player player, BoostConfig config) {
+        return 1 + (config.attackMultiplier() - 1) * KarmaSystem.strength(player);
     }
     private static void multiplier(Player player, Holder<Attribute> attr, double factor) {
         put(player, attr, factor - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
