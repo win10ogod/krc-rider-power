@@ -39,7 +39,7 @@
 | --- | --- | --- |
 | Kamen Rider Craft | [kamen-rider-craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) | 1.1.3 |
 | GeckoLib | [geckolib](https://www.curseforge.com/minecraft/mc-mods/geckolib) | 4.9.2，NeoForge 1.21.1 |
-| Player Animation Library | [playeranimator](https://www.curseforge.com/minecraft/mc-mods/playeranimator) | 1.1.6+mc.1.21.1，NeoForge |
+| Player Animation Library | [player-animation-library](https://www.curseforge.com/minecraft/mc-mods/player-animation-library) | 1.1.6+mc.1.21.1，NeoForge |
 
 整包 `curseforge-kit.zip` 是提供給作者的上架材料。實際 Minecraft 模組檔案選其中的成品 JAR；`-sources.jar` 是原始碼附件，不是供玩家安裝的版本。
 

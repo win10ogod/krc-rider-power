@@ -33,7 +33,7 @@ Use **Minecraft 1.21.1**, **Java 21**, and **NeoForge 21.1.244 or newer within t
 
 - [Kamen Rider Craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) — tested with 1.1.3.
 - [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) — tested with 4.9.2 for NeoForge 1.21.1.
-- [Player Animation Library](https://www.curseforge.com/minecraft/mc-mods/playeranimator) — tested with 1.1.6+mc.1.21.1 for NeoForge.
+- [Player Animation Library](https://www.curseforge.com/minecraft/mc-mods/player-animation-library) — tested with 1.1.6+mc.1.21.1 for NeoForge.
 
 Place `krc-rider-power-1.0.0.jar` in `mods`, then launch the game or server. The configuration file is created on first startup.
 

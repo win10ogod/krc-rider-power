@@ -29,6 +29,14 @@ python3 -m unittest discover -s scripts/tests -v
 
 The Gradle GameTest task verifies a fresh completion record against the number of test methods in source. Missing tests or an early server exit cannot pass solely because the Minecraft process returned exit code zero.
 
+An isolated diagnostic run used an empty test namespace: Minecraft reported `No test functions were given`, and the Gradle completion check correctly returned `BUILD FAILED`.
+
+## GitHub-hosted verification
+
+- [Build and test](https://github.com/win10ogod/krc-rider-power/actions/runs/34603823510) passed from a fresh GitHub checkout, downloading the upstream dependency without a local KRC JAR.
+- [Update KRC and build](https://github.com/win10ogod/krc-rider-power/actions/runs/34603836378) passed after a manual trigger with `force_build=true`, including release discovery, all tests, artifact upload, and publishing the [KRC 1.1.3 compatibility prerelease](https://github.com/win10ogod/krc-rider-power/releases/tag/compat-v1.0.0-krc-I61dxvsY).
+- At verification time, KRC 1.1.3 was already the latest matching stable upstream release, so that live run did not need to change the dependency pin. Newer-version selection and push failure handling were covered by the Python tests.
+
 ## Editor rendering
 
 ```bash
