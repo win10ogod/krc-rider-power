@@ -13,7 +13,10 @@ import net.neoforged.bus.api.EventPriority;
 @EventBusSubscriber(modid = KrcBoost.ID)
 public final class BoostEvents {
     @SubscribeEvent public static void starting(ServerAboutToStartEvent event) { KrcBoost.reload(); }
-    @SubscribeEvent public static void tick(PlayerTickEvent.Post event) { BoostEngine.update(event.getEntity(), KrcBoost.config()); }
+    @SubscribeEvent public static void tick(PlayerTickEvent.Post event) {
+        BoostEngine.update(event.getEntity(), KrcBoost.config());
+        HeroReward.update(event.getEntity());
+    }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) { BoostEngine.clear(event.getEntity()); }
     @SubscribeEvent public static void clone(PlayerEvent.Clone event) { BoostEngine.clear(event.getEntity()); }
 

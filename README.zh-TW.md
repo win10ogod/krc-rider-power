@@ -10,7 +10,7 @@
 
 1. 使用 **Minecraft 1.21.1、Java 21、NeoForge 21.1.244 或以上的 21.1 版本**。
 2. 安裝 Kamen Rider Craft，以及它要求的 GeckoLib、Player Animation Library。
-3. 把 `krc-rider-power-1.2.0.jar` 放進遊戲的 `mods` 資料夾。多人遊戲的伺服器與客戶端都要更新至 1.2.0；新版網路協定不接受舊版客戶端。
+3. 把 `krc-rider-power-1.2.1.jar` 放進遊戲的 `mods` 資料夾。多人遊戲的伺服器與客戶端使用 1.2.1；1.2.0 以前的客戶端使用不相容的網路協定。
 4. 穿齊 KRC 裝備並完成變身，會自動出現 **騎士之力** Buff。解除變身、裝備不完整、死亡或進入觀察者模式後，加成會移除。
 
 已實際測試的組合：KRC **1.1.3**、NeoForge **21.1.244**、GeckoLib **4.9.2**、Player Animation Library **1.1.6+mc.1.21.1**。KRC 未來版本若改動共用 Java 介面，仍可能需要更新附加模組。
@@ -53,6 +53,8 @@
 | 功德 100 | ×2 | ×2 |
 
 邪惡路線提高傷害並降低最大生命，另外四項額外加成仍隨業力增加而減少。最大生命切換保留血量百分比，例如 `12/30 → 4/10 → 16/40`；不會持續扣血，也不能靠切換補滿生命。
+
+善惡值至少 **100** 時，會持續獲得原版**村莊英雄 I**，不需變身。低於 100 或停用善惡系統後停止續期，本模組提供的短效獎勵最多在 200 遊戲 tick（正常速度 10 秒）內到期；原本較長、較高等級或永久的村莊英雄不會被縮短、降級或強制移除。觀察者與死亡玩家不會獲得獎勵。門檻固定為 100，不隨 `scoreLimit` 調整。
 
 玩家使用 `/krcboost karma` 查看分數。管理員可編輯 `config/krcboost-karma.json`，再執行 `/krcboost reload`；普通玩家沒有改分入口。新增 `evilDamageBonusScale`（預設 3）及 `evilHealthMultiplier`（預設 0.5）控制最高業力的傷害與生命；舊設定缺少欄位時沿用新預設，不必刪除設定或存檔。將善惡設定的 `enabled` 設成 `false`，會保留分數紀錄並恢復共用基礎加成。
 
@@ -102,9 +104,9 @@ Gradle 會自動從 KRC 作者的 Modrinth 發佈來源下載釘選版本，供�
 ./gradlew test runGameTestServer build
 ```
 
-Windows 使用 `gradlew.bat test runGameTestServer build`。需要 JDK 21。成品位於 `build/libs/krc-rider-power-1.2.0.jar`；同目錄的 `-sources.jar` 是原始碼，請勿當作遊戲模組安裝。
+Windows 使用 `gradlew.bat test runGameTestServer build`。需要 JDK 21。成品位於 `build/libs/krc-rider-power-1.2.1.jar`；同目錄的 `-sources.jar` 是原始碼，請勿當作遊戲模組安裝。
 
-1.2.0 驗證記錄見 [邪惡騎士之力驗證](evidence/evil-power-verification.md)，1.1.0 記錄見 [善惡系統驗證](evidence/karma-verification.md)，原版記錄見 [1.0.0 驗證](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
+1.2.1 驗證記錄見 [邪惡騎士之力驗證](evidence/evil-power-verification.md)，1.1.0 記錄見 [善惡系統驗證](evidence/karma-verification.md)，原版記錄見 [1.0.0 驗證](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
 
 此專案不修改或重新封裝 KRC 原始 JAR。
 

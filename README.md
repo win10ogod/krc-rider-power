@@ -13,7 +13,7 @@ The addon checks KRC's common driver and transformation interface. New forms usi
 3. Put the release JAR in `mods` on **both the client and server**.
 4. Equip a complete KRC suit and finish transforming. Rider Power activates automatically and is removed when transformation eligibility ends.
 
-The 1.2.0 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
+The 1.2.1 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
 
 ## Default base bonuses
 
@@ -43,7 +43,7 @@ Karma starts at **0** and ranges from **−100 to +100** by default:
 
 Actions count even while untransformed; the buff still requires a completed transformation. Positive gains share a **30-point budget per 24,000 server game ticks** (20 minutes at 20 TPS). Ordinary spawner, spawn egg, command, dispenser, and mob-summoned targets do not award points. Trial chamber monsters remain eligible. Infected villagers and repeated cures do not award rescue points. Exclusions persist through conversions and slime splitting. Naturally spawned mob farms can still earn points within the same budget.
 
-Negative signed karma is shown as a positive evil-karma amount: score −100 means **業力 100**; score +100 means **功德 100** (merit). Scores below zero select **Evil Rider Power**, while neutral and positive scores select **Rider Power**. Only one effect is active at a time.
+Negative signed karma is shown as a positive evil-karma amount: score −100 means **業力 100**; score +100 means **功德 100** (merit). Scores below zero select **Evil Rider Power**, while neutral and positive scores select **Rider Power**. Only one Rider Power effect is active at a time; the vanilla Hero reward can coexist.
 
 | Signed score | Power | Damage | Maximum health |
 | --- | --- | --- | --- |
@@ -55,6 +55,8 @@ Negative signed karma is shown as a positive evil-karma amount: score −100 mea
 Good and neutral scores retain the bonus formula `1 + (baseMultiplier − 1) × (1 + score / scoreLimit)`. For evil karma fraction `e = −score / scoreLimit`, damage is `1 + (attackMultiplier − 1) × (1 + (evilDamageBonusScale − 1) × e)` and maximum health is `healthMultiplier × (1 − e) + evilHealthMultiplier × e`. The armor, toughness, speed, and knockback bonuses still decrease with negative scores, reaching no extra bonus at minimum score.
 
 Switching powers preserves wounded health percentage: `12/30 → 4/10 → 16/40` stays at 40%. Evil power reduces maximum health; it does not inflict periodic damage.
+
+A signed karma score of **100 or more** grants renewable **Hero of the Village I**, even without transforming. Below 100 or with karma disabled, renewal stops and this short reward expires within 200 game ticks (10 seconds at normal speed). Existing longer, stronger, or infinite Hero effects are not shortened, downgraded, or forcibly removed. Dead players and spectators do not receive the reward. The threshold stays at 100 even when `scoreLimit` changes.
 
 The server stores scores and reward budgets by player UUID in the world's `data/krcboost_karma.dat`. Death, logout, and dimension changes do not reset them. Use `/krcboost karma` to view your score; no command or client packet sets personal scores.
 
@@ -73,7 +75,7 @@ Rules are created in `config/krcboost-karma.json`:
 }
 ```
 
-Administrators can edit this file and run `/krcboost reload`. `scoreLimit` must be a positive integer; event values and the positive reward budget must be nonnegative integers. Set karma's `enabled` to `false` to keep the shared base bonuses without karma scaling or scoring; saved history is retained. `evilDamageBonusScale` must be finite and at least 1; `evilHealthMultiplier` must be greater than 0 and at most 1. Existing 1.1.0 rule files use defaults for missing new fields, and saved scores are retained. The in-game editor controls base bonuses. Update both client and server to 1.2.0; older clients use an incompatible network protocol. See the [detailed karma guide (Traditional Chinese)](docs/karma.md) for eligibility, persistence, and examples.
+Administrators can edit this file and run `/krcboost reload`. `scoreLimit` must be a positive integer; event values and the positive reward budget must be nonnegative integers. Set karma's `enabled` to `false` to keep the shared base bonuses without karma scaling or scoring; saved history is retained. `evilDamageBonusScale` must be finite and at least 1; `evilHealthMultiplier` must be greater than 0 and at most 1. Existing 1.1.0 rule files use defaults for missing new fields, and saved scores are retained. The in-game editor controls base bonuses. Use 1.2.1 on both client and server. Versions before 1.2.0 use an incompatible network protocol. See the [detailed karma guide (Traditional Chinese)](docs/karma.md) for eligibility, persistence, and examples.
 
 ## Configuration
 
@@ -125,7 +127,7 @@ Install **JDK 21**, clone the repository, and run:
 
 On Windows, use `gradlew.bat test runGameTestServer build`. Gradle downloads the pinned KRC dependency from the author's Modrinth release; no local upstream JAR is required. The dependency is not bundled into this mod.
 
-Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [1.2.0 verification details](evidence/evil-power-verification.md), [1.1.0 verification](evidence/karma-verification.md), and the [1.0.0 verification record](evidence/verification.md).
+Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [1.2.1 verification details](evidence/evil-power-verification.md), [1.1.0 verification](evidence/karma-verification.md), and the [1.0.0 verification record](evidence/verification.md).
 
 ## Automatic KRC updates
 

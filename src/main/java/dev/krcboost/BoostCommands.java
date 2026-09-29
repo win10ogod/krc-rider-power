@@ -36,6 +36,7 @@ public final class BoostCommands {
                     context.getSource().sendSuccess(() -> Component.literal("善惡系統" + (rules.enabled() ? "已開啟" : "已停用（保留紀錄）")
                             + "；善惡值：" + KarmaSystem.score(player) + "（範圍 -" + rules.scoreLimit() + "～+" + rules.scoreLimit() + "）"
                             + "；" + personalPower(player)
+                            + "\n善惡值至少 100 可獲得村莊英雄 I（不需變身）。"
                             + "\n首次救治未由村民感染而來的殭屍村民 +" + rules.cureReward()
                             + "；擊殺敵對怪物 +" + rules.hostileKillReward()
                             + "；殺害村民或流浪商人 -" + rules.villagerKillPenalty()

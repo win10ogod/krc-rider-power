@@ -26,7 +26,7 @@ GameTest 使用候選版本的實際 KRC 驅動器註冊表，檢查完整變身
 
 ## 版本與重試
 
-例如以 KRC 版本 ID `I61dxvsY` 建置時，產物版本為 `1.2.0+krc.I61dxvsY`，標籤為 `compat-v1.2.0-krc-I61dxvsY`。正式版 `v1.2.0` 保持獨立。自動相容性版本標為 prerelease，並在說明中列出實際測試的 KRC 版本。
+例如以 KRC 版本 ID `I61dxvsY` 建置時，產物版本為 `1.2.1+krc.I61dxvsY`，標籤為 `compat-v1.2.1-krc-I61dxvsY`。正式版 `v1.2.1` 保持獨立。自動相容性版本標為 prerelease，並在說明中列出實際測試的 KRC 版本。
 
 即使依賴已更新，若對應的相容性 release 尚未完成，下一次執行仍會建置與補發。檔案先上傳到 draft，全部成功才公開。已公開的相容性版本不會被覆寫；強制重建的產物仍可從 Actions artifacts 下載。
 

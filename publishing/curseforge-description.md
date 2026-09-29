@@ -45,6 +45,8 @@ Evil power increases damage as it reduces maximum health. Extra armor, toughness
 
 Deeds count even while untransformed. Scores survive death and logout. To limit farming, positive gains share a **30-point budget per 24,000 server game ticks** (20 minutes at normal tick speed). Ordinary spawner, egg, command, dispenser, and mob-summoned targets do not give positive points; trial chamber combat can. Infected villagers and repeated cures do not grant rescue points. Naturally spawned mob farms can still earn points within the same budget.
 
+A signed karma score of **100 or more** grants renewable **Hero of the Village I**, even without transforming. Below 100 or with karma disabled, renewal stops and this short reward expires within 200 game ticks (10 seconds at normal speed). Existing longer, stronger, or infinite Hero effects are not shortened, downgraded, or forcibly removed. Dead players and spectators do not receive the reward. The threshold stays at 100 even when `scoreLimit` changes.
+
 ## Shared settings for multiplayer
 
 Administrators manage one set of base bonuses and karma rules for the whole server. Ordinary players cannot change their own values, and repeated transformations do not stack the buff or refill health. When maximum health changes, your current health percentage is preserved.
@@ -69,9 +71,9 @@ The editor and command messages currently use **Traditional Chinese**. An [Engli
 - [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib)
 - [Player Animation Library](https://www.curseforge.com/minecraft/mc-mods/player-animation-library)
 
-Install this mod and its dependencies on **both the client and server**. Update both sides to 1.2.0; older addon clients cannot join the new protocol. Place the mod JAR in the `mods` folder, launch the game, and complete a KRC transformation.
+Install this mod and its dependencies on **both the client and server**. Use 1.2.1 on both sides; addon clients before 1.2.0 use an incompatible protocol. Place the mod JAR in the `mods` folder, launch the game, and complete a KRC transformation.
 
-Version 1.2.0 was tested with **KRC 1.1.3**, **GeckoLib 4.9.2**, and **Player Animation Library 1.1.6+mc.1.21.1**, using NeoForge 21.1.244.
+Version 1.2.1 was tested with **KRC 1.1.3**, **GeckoLib 4.9.2**, and **Player Animation Library 1.1.6+mc.1.21.1**, using NeoForge 21.1.244.
 
 ## Updates and source code
 

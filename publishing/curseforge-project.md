@@ -25,13 +25,13 @@
 
 | 欄位 | 填入內容 |
 | --- | --- |
-| Upload file | `krc-rider-power-1.2.0.jar`，位於本地 `dist/1.2.0/` 或 GitHub Release |
-| Display name | KRC Rider Power 1.2.0 — NeoForge 1.21.1 |
+| Upload file | `krc-rider-power-1.2.1.jar`，位於本地 `dist/1.2.1/` 或 GitHub Release |
+| Display name | KRC Rider Power 1.2.1 — NeoForge 1.21.1 |
 | Release type | Release |
 | Game version | 1.21.1 |
 | Mod loader | NeoForge |
 | Java version | Java 21（若表單提供此欄位） |
-| Changelog | 使用 [CHANGELOG.md](../CHANGELOG.md) 的 1.2.0 段落 |
+| Changelog | 使用 [CHANGELOG.md](../CHANGELOG.md) 的 1.2.1 段落 |
 
 在專案或檔案的 Relations 中，將下列項目設為 **Required Dependency**：
 

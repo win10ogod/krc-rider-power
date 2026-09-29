@@ -92,6 +92,7 @@ public final class KarmaSystem {
     private static void changed(Player player, int delta, String reason) {
         if (delta == 0) return;
         BoostEngine.update(player, KrcBoost.config());
+        HeroReward.update(player);
         var power = RiderPowerStats.calculate(KrcBoost.config(), KrcBoost.karmaSettings(), score(player));
         if (player instanceof ServerPlayer)
             player.displayClientMessage(Component.translatable("krcboost.karma.changed", Component.translatable(reason),

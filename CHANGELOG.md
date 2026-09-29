@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 — 2026-09-29
+
+- Grant renewable Hero of the Village I at signed karma 100 or higher, including while untransformed.
+- Stop renewing below the threshold or when karma is disabled; the short reward expires within 200 game ticks. Existing longer, stronger, and infinite Hero effects remain intact.
+- Exclude dead and spectator players from this reward. Existing scoring, animal neutrality, and normal/evil power rules remain unchanged.
+
 ## 1.2.0 — 2026-09-11
 
 - Add Evil Rider Power for negative signed karma: greater evil karma raises damage while reducing maximum health. Neutral and positive scores use Rider Power; only one effect can be active at a time.
