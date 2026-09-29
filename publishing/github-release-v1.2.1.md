@@ -7,3 +7,5 @@ Existing karma data, animal neutrality, and normal/evil Rider Power behavior rem
 Install `krc-rider-power-1.2.1.jar` on both client and server. Requires Minecraft 1.21.1, Java 21, NeoForge, and KRC with its dependencies. Existing configuration and save data can be retained; the payload protocol remains version 2.
 
 MIT licensed. Sources and CurseForge submission materials are included as separate downloads.
+
+Validation: 12 JUnit tests and all 24 NeoForge GameTests passed with KRC 1.1.3 and 1.1.4. This release uses the verified KRC 1.1.4 dependency pin.

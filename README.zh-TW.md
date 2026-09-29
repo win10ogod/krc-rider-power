@@ -13,7 +13,7 @@
 3. 把 `krc-rider-power-1.2.1.jar` 放進遊戲的 `mods` 資料夾。多人遊戲的伺服器與客戶端使用 1.2.1；1.2.0 以前的客戶端使用不相容的網路協定。
 4. 穿齊 KRC 裝備並完成變身，會自動出現 **騎士之力** Buff。解除變身、裝備不完整、死亡或進入觀察者模式後，加成會移除。
 
-已實際測試的組合：KRC **1.1.3**、NeoForge **21.1.244**、GeckoLib **4.9.2**、Player Animation Library **1.1.6+mc.1.21.1**。KRC 未來版本若改動共用 Java 介面，仍可能需要更新附加模組。
+已實際測試的組合：KRC **1.1.3 / 1.1.4**、NeoForge **21.1.244**、GeckoLib **4.9.2**、Player Animation Library **1.1.6+mc.1.21.1**。KRC 未來版本若改動共用 Java 介面，仍可能需要更新附加模組。
 
 ## 預設基礎加成
 
@@ -106,7 +106,7 @@ Gradle 會自動從 KRC 作者的 Modrinth 發佈來源下載釘選版本，供�
 
 Windows 使用 `gradlew.bat test runGameTestServer build`。需要 JDK 21。成品位於 `build/libs/krc-rider-power-1.2.1.jar`；同目錄的 `-sources.jar` 是原始碼，請勿當作遊戲模組安裝。
 
-1.2.1 驗證記錄見 [邪惡騎士之力驗證](evidence/evil-power-verification.md)，1.1.0 記錄見 [善惡系統驗證](evidence/karma-verification.md)，原版記錄見 [1.0.0 驗證](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
+1.2.0 驗證記錄見 [邪惡騎士之力驗證](evidence/evil-power-verification.md)，1.1.0 記錄見 [善惡系統驗證](evidence/karma-verification.md)，原版記錄見 [1.0.0 驗證](evidence/verification.md)。管理員畫面截圖見 [rider-power-editor.png](evidence/rider-power-editor.png)。測試程式在獨立 `gametest` source set 中，不會進入成品。
 
 此專案不修改或重新封裝 KRC 原始 JAR。
 

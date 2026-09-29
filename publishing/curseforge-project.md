@@ -37,7 +37,7 @@
 
 | 專案 | CurseForge 頁面 | 實測版本 |
 | --- | --- | --- |
-| Kamen Rider Craft | [kamen-rider-craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) | 1.1.3 |
+| Kamen Rider Craft | [kamen-rider-craft](https://www.curseforge.com/minecraft/mc-mods/kamen-rider-craft) | 1.1.3 / 1.1.4 |
 | GeckoLib | [geckolib](https://www.curseforge.com/minecraft/mc-mods/geckolib) | 4.9.2，NeoForge 1.21.1 |
 | Player Animation Library | [player-animation-library](https://www.curseforge.com/minecraft/mc-mods/player-animation-library) | 1.1.6+mc.1.21.1，NeoForge |
 

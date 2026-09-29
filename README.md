@@ -13,7 +13,7 @@ The addon checks KRC's common driver and transformation interface. New forms usi
 3. Put the release JAR in `mods` on **both the client and server**.
 4. Equip a complete KRC suit and finish transforming. Rider Power activates automatically and is removed when transformation eligibility ends.
 
-The 1.2.1 release was tested with KRC **1.1.3**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
+The 1.2.1 release was tested with KRC **1.1.3 / 1.1.4**, NeoForge **21.1.244**, GeckoLib **4.9.2**, and Player Animation Library **1.1.6+mc.1.21.1**. Future compatibility builds identify their KRC version in the release title. The in-game editor and command messages currently use Traditional Chinese.
 
 ## Default base bonuses
 
@@ -127,7 +127,7 @@ Install **JDK 21**, clone the repository, and run:
 
 On Windows, use `gradlew.bat test runGameTestServer build`. Gradle downloads the pinned KRC dependency from the author's Modrinth release; no local upstream JAR is required. The dependency is not bundled into this mod.
 
-Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [1.2.1 verification details](evidence/evil-power-verification.md), [1.1.0 verification](evidence/karma-verification.md), and the [1.0.0 verification record](evidence/verification.md).
+Builds are written to `build/libs/`. Install the regular JAR; `-sources.jar` is for source reference. The separate GameTest source set is excluded from release JARs. See [1.2.0 verification details](evidence/evil-power-verification.md), [1.1.0 verification](evidence/karma-verification.md), and the [1.0.0 verification record](evidence/verification.md).
 
 ## Automatic KRC updates
 

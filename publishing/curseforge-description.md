@@ -73,7 +73,7 @@ The editor and command messages currently use **Traditional Chinese**. An [Engli
 
 Install this mod and its dependencies on **both the client and server**. Use 1.2.1 on both sides; addon clients before 1.2.0 use an incompatible protocol. Place the mod JAR in the `mods` folder, launch the game, and complete a KRC transformation.
 
-Version 1.2.1 was tested with **KRC 1.1.3**, **GeckoLib 4.9.2**, and **Player Animation Library 1.1.6+mc.1.21.1**, using NeoForge 21.1.244.
+Version 1.2.1 was tested with **KRC 1.1.3 / 1.1.4**, **GeckoLib 4.9.2**, and **Player Animation Library 1.1.6+mc.1.21.1**, using NeoForge 21.1.244.
 
 ## Updates and source code
 
