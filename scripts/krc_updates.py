@@ -1,28 +1,44 @@
 """Discover a stable KRC update; apply its pin only in the build workspace."""
 import argparse
 from datetime import datetime
+from http.client import HTTPException
 import json
 import os
 from pathlib import Path
 import re
+import sys
+import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 PROJECT = "kLNLtzWr"
 API = "https://api.modrinth.com/v2"
+# Seconds to wait before each retry of a transient Modrinth/GitHub API failure.
+RETRY_DELAYS = (5, 15, 45)
 
 
 def get_json(url, token=None, allow_missing=False):
     headers = {"User-Agent": "KRC-Rider-Power-update-workflow", "Accept": "application/json"}
     if token:
         headers["Authorization"] = "Bearer " + token
-    try:
-        with urlopen(Request(url, headers=headers), timeout=60) as response:
-            return json.load(response)
-    except HTTPError as error:
-        if allow_missing and error.code == 404:
-            return None
-        raise
+    for delay in RETRY_DELAYS + (None,):
+        try:
+            with urlopen(Request(url, headers=headers), timeout=60) as response:
+                return json.load(response)
+        except HTTPError as error:
+            if allow_missing and error.code == 404:
+                return None
+            # Only rate limiting and server errors are transient; 401/403/404 fail immediately.
+            if delay is None or not (error.code == 429 or error.code >= 500):
+                raise
+            reason = "HTTP " + str(error.code)
+        except (OSError, HTTPException) as error:  # timeouts, DNS, resets, truncated responses
+            if delay is None:
+                raise
+            reason = type(error).__name__ + ": " + str(error)
+        print("Transient error from " + url + " (" + reason + "); retrying in " + str(delay) + "s",
+              file=sys.stderr)
+        time.sleep(delay)
 
 
 def published(version):

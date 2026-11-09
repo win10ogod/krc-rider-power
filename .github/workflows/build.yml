@@ -19,6 +19,17 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: gradle
+      - name: Download the Gradle distribution
+        # The wrapper does not retry, so one slow services.gradle.org response used to fail the
+        # whole run. Only this download is retried; build and test failures are never retried.
+        run: |
+          for attempt in 1 2 3 4; do
+            ./gradlew --no-daemon --version && exit 0
+            [ "$attempt" -lt 4 ] || break
+            echo "::warning::Gradle distribution download failed (attempt $attempt of 4); retrying"
+            sleep $((attempt * 20))
+          done
+          exit 1
       - name: Run unit tests, KRC integration tests, and build
         run: |
           python3 -m unittest discover -s scripts/tests -v

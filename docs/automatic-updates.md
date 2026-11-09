@@ -32,6 +32,8 @@ GameTest 使用候選版本的實際 KRC 驅動器註冊表，檢查完整變身
 
 建置期間若有人更新 `main`，自動提交會停止並要求重跑，不會強制推送或合併未經測試的內容。同時只執行一個 KRC 更新工作。
 
+暫時性網路錯誤會自動重試：Gradle 發行版下載最多 4 次，Modrinth 與 GitHub API 的逾時、連線中斷、HTTP 429 或 5xx 最多 4 次。編譯與測試失敗不重試，以免掩蓋真正的相容性問題；401、403 等權限錯誤也會立即失敗。
+
 ## GitHub 設定與排程
 
 使用儲存庫內建的 `GITHUB_TOKEN`，工作流程宣告 `contents: write` 以提交版本與建立 release；不需另外保存個人存取權杖。排程只在原始 `win10ogod/krc-rider-power` 儲存庫執行，fork 如需啟用，可調整 workflow 的 repository 條件。若日後加上禁止直接推送的分支規則，需把自動更新改為符合該規則的 PR 流程。

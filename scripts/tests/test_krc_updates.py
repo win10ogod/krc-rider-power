@@ -1,7 +1,12 @@
+from contextlib import redirect_stderr
 from copy import deepcopy
+import io
+import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
+from urllib.error import HTTPError, URLError
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import krc_updates
@@ -59,6 +64,48 @@ class UpdateSelectionTests(unittest.TestCase):
         for invalid in (source.replace("krc_version=1.1.3\n", ""), source + "krc_version=1.1.3\n"):
             with self.assertRaisesRegex(ValueError, "exactly one"):
                 krc_updates.replace_pins(invalid, "1.1.4", "New00001")
+
+
+def http_error(code):
+    return HTTPError("https://example.invalid/api", code, "error", {}, None)
+
+
+class ApiRetryTests(unittest.TestCase):
+    URL = "https://example.invalid/api"
+
+    def get_json(self, outcomes, **kwargs):
+        with patch.object(krc_updates, "urlopen", side_effect=outcomes) as urlopen, \
+                patch.object(krc_updates.time, "sleep") as sleep, redirect_stderr(io.StringIO()):
+            try:
+                return krc_updates.get_json(self.URL, **kwargs), urlopen, sleep
+            except Exception as error:
+                return error, urlopen, sleep
+
+    def test_transient_network_and_server_failures_are_retried(self):
+        ok = io.BytesIO(json.dumps({"ok": True}).encode())
+        result, urlopen, sleep = self.get_json([URLError("reset"), TimeoutError("read timed out"), http_error(503), ok])
+        self.assertEqual(result, {"ok": True})
+        self.assertEqual(urlopen.call_count, 4)
+        self.assertEqual([call.args[0] for call in sleep.call_args_list], list(krc_updates.RETRY_DELAYS))
+
+    def test_persistent_failure_is_raised_after_the_last_attempt(self):
+        result, urlopen, _ = self.get_json(http_error(502))
+        self.assertIsInstance(result, HTTPError)
+        self.assertEqual(urlopen.call_count, len(krc_updates.RETRY_DELAYS) + 1)
+
+    def test_client_errors_fail_immediately(self):
+        for code in (401, 403, 404):
+            with self.subTest(code=code):
+                result, urlopen, sleep = self.get_json(http_error(code))
+                self.assertIsInstance(result, HTTPError)
+                self.assertEqual(urlopen.call_count, 1)
+                sleep.assert_not_called()
+
+    def test_missing_release_lookup_is_not_retried(self):
+        result, urlopen, sleep = self.get_json(http_error(404), allow_missing=True)
+        self.assertIsNone(result)
+        self.assertEqual(urlopen.call_count, 1)
+        sleep.assert_not_called()
 
 
 if __name__ == "__main__":
