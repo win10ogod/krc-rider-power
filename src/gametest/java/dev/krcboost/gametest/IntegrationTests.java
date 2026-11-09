@@ -9,12 +9,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +38,10 @@ import java.util.UUID;
 @PrefixGameTestTemplate(false)
 public final class IntegrationTests {
     private static final BoostConfig CONFIG = BoostConfig.defaults();
+    // Resolve KRC's transformation timer by registry ID, not by its Java holder class:
+    // KRC 1.1.5 renamed world.attribute.Attributes to KRCAttributes while keeping this ID.
+    private static final ResourceKey<Attribute> KRC_IS_TRANSFORMING =
+            ResourceKey.create(Registries.ATTRIBUTE, ResourceLocation.parse("kamenridercraft:is_transforming"));
 
     static RiderDriverItem kuuga() {
         return (RiderDriverItem)BuiltInRegistries.ITEM.get(ResourceLocation.parse("kamenridercraft:arcle"));
@@ -47,7 +53,10 @@ public final class IntegrationTests {
         player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(driver.helmet));
         player.setItemSlot(EquipmentSlot.CHEST, new ItemStack(driver.chestplate));
         player.setItemSlot(EquipmentSlot.LEGS, new ItemStack(driver.leggings));
-        player.getAttribute(com.kelco.kamenridercraft.world.attribute.Attributes.IS_TRANSFORMING).setBaseValue(0);
+        setTransformationTicks(player, 0);
+    }
+    static void setTransformationTicks(Player player, double ticks) {
+        player.getAttribute(BuiltInRegistries.ATTRIBUTE.getHolderOrThrow(KRC_IS_TRANSFORMING)).setBaseValue(ticks);
     }
     static void near(GameTestHelper helper, double actual, double expected, String message) {
         helper.assertTrue(Math.abs(actual - expected) < 0.0001, message + ": expected " + expected + ", actual " + actual);
@@ -107,9 +116,9 @@ public final class IntegrationTests {
         player.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
         helper.assertTrue(!BoostEngine.update(player, CONFIG), "Incomplete suit rejected");
         equip(player, kuuga());
-        player.getAttribute(com.kelco.kamenridercraft.world.attribute.Attributes.IS_TRANSFORMING).setBaseValue(20);
+        setTransformationTicks(player, 20);
         helper.assertTrue(!BoostEngine.update(player, CONFIG), "Transformation animation is not completed");
-        player.getAttribute(com.kelco.kamenridercraft.world.attribute.Attributes.IS_TRANSFORMING).setBaseValue(0);
+        setTransformationTicks(player, 0);
         player.addEffect(new MobEffectInstance(KrcBoost.RIDER_POWER, 1000, 255));
         BoostEngine.update(player, CONFIG);
         helper.assertTrue(player.getEffect(KrcBoost.RIDER_POWER).getAmplifier() == 0, "Amplifier injection normalized");
